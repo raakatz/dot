@@ -1,0 +1,14 @@
+# GENERATE CA KEY
+openssl genrsa -out ca.key 4096
+
+# CREATE CA CERT FROM KEY
+openssl req -new -x509 -days 3650 -config ca.cnf -key ca.key -out ca.crt
+
+# GENERATE SERVER KEY
+openssl genrsa -out server.key 4096
+
+# CREATE CSR
+openssl req -config server.cnf -new -key server.key -out server.csr
+
+# GENERATE SERVER CERTIFICATE
+openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -extensions ext -extfile server.cnf

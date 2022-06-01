@@ -1,0 +1,27 @@
+[ req ]
+distinguished_name  = req_distinguished_name
+policy              = policy_anything
+x509_extensions     = ext
+req_extensions      = v3_req
+
+[ req_distinguished_name ]
+commonName                      = Common Name (eg, your name or your server hostname)
+
+[ ext ]
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid,issuer
+basicConstraints        = CA:FALSE
+extendedKeyUsage        = serverAuth
+keyUsage                = nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment
+subjectAltName          = @alt_names
+
+[ v3_req ]
+basicConstraints        = CA:FALSE
+extendedKeyUsage        = serverAuth
+keyUsage                = nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment
+subjectAltName          = @alt_names
+
+[ alt_names ]
+IP.1 = 1.1.1.1
+DNS.1 = your.server.com
+DNS.2 = your
