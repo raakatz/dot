@@ -31,7 +31,7 @@ set novisualbell
 # FOLDING
 set foldmethod=syntax
 set foldnestmax=100
-set foldcolumn 2
+set foldcolumn=2
 
 # MISC
 set confirm
