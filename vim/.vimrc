@@ -29,9 +29,10 @@ set noerrorbells
 set novisualbell
 
 " FOLDING
-set foldmethod=syntax
-set foldnestmax=100
+set foldmethod=indent
+set foldnestmax=2
 set foldcolumn=2
+set nofoldenable
 
 " MISC
 set confirm
