@@ -1,37 +1,37 @@
-# INDENTATION
+" INDENTATION
 set expandtab
 set ts=2
 set sw=2
 set ai
 set si
 
-# SEARCH
+" SEARCH
 set ignorecase
 set smartcase
 set incsearch
 set hlsearch
 
-# LINE NUMBERS
+" LINE NUMBERS
 set number
 set relativenumber
 
-# TEXT RENDERING
+" TEXT RENDERING
 syntax enable
 filetype on
 filetype plugin on
 filetype indent on
 set wrap
 
-# UI
+" UI
 set wildmenu
 set wildmode=list:longest
 set noerrorbells
 set novisualbell
 
-# FOLDING
+" FOLDING
 set foldmethod=syntax
 set foldnestmax=100
 set foldcolumn=2
 
-# MISC
+" MISC
 set confirm
