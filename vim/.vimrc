@@ -32,7 +32,7 @@ set novisualbell
 set foldmethod=indent
 set foldnestmax=100
 set foldcolumn=2
-set nofoldenable
+set foldlevel=100
 
 " MISC
 set confirm
