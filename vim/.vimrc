@@ -1,3 +1,5 @@
+set nocompatible
+
 " INDENTATION
 set expandtab
 set ts=2
@@ -36,3 +38,4 @@ set foldlevel=100
 
 " MISC
 set confirm
+set hidden
