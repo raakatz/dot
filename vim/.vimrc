@@ -50,9 +50,9 @@ set statusline+=\
 set statusline+=%f
 set statusline+=%m
 set statusline+=%=
-set statusline+=%{filetype}
-set statusline+=\ 
 set statusline+=%#CursorColumn#
+set statusline+=%y
+set statusline+=\ 
 set statusline+=%k
 set statusline+=\ 
 set statusline+=%l
