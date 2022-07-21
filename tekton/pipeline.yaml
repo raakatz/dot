@@ -1,0 +1,88 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: my-pipeline
+  namespace: tekton-pipelines
+spec:
+  params:
+  - name: src-repo-url
+    type: string
+  - name: yaml-repo-url
+    type: string
+  - name: yaml-git-revision
+    type: string
+  - name: image-reference
+    type: string
+  - name: git-user-name
+    type: string
+  - name: git-user-email
+    type: string
+  - name: git-script
+    type: string
+  
+  workspaces:
+  - name: src-git-clone
+  - name: yaml-git-clone
+  - name: git-ssh-key
+  - name: docker-credentials
+  
+  tasks:
+  - name: clone-src-git-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: src-git-clone
+    - name: ssh-directory
+      workspace: git-ssh-key
+    params:
+    - name: url
+      value: $(params.src-repo-url)
+  - name: tests
+    taskRef:
+      name: tests
+    runAfter: ["clone-src-git-repo"]
+  - name: build-push
+    runAfter: ["tests"]
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: src-git-clone
+    - name: dockerconfig
+      workspace: docker-credentials
+    params:
+    - name: IMAGE
+      value: $(params.image-reference)
+  - name: clone-yaml-git-repo
+    taskRef:
+      name: git-clone
+    runAfter:
+    - build-push
+    workspaces:
+    - name: output
+      workspace: yaml-git-clone
+    - name: ssh-directory
+      workspace: git-ssh-key
+    params:
+    - name: url
+      value: $(params.yaml-repo-url)
+    - name: revision
+      value: $(params.yaml-git-revision)
+  - name: edit-and-push-yaml
+    taskRef:
+      name: git-cli
+    runAfter:
+    - clone-yaml-git-repo
+    params:
+    - name: GIT_USER_NAME
+      value: $(params.git-user-name)
+    - name: GIT_USER_EMAIL
+      value: $(params.git-user-email)
+    - name: GIT_SCRIPT
+      value: $(params.git-script)
+    workspaces:
+    - name: source
+      workspace: yaml-git-clone
+    - name: ssh-directory
+      workspace: git-ssh-key
