@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: my-pipeline-run
+  namespace: tekton-pipelines
+spec:
+  pipelineRef:
+    name: my-pipeline
+  params:
+  - name: src-repo-url
+    value: ssh://git@gitea-ssh.gitea.svc/gitea_admin/src.git
+  - name: yaml-repo-url
+    value: ssh://git@gitea-ssh.gitea.svc/gitea_admin/yaml.git
+  - name: image-reference
+    value: 10.88.0.1:5000/tekton/myimg:123456
+  - name: git-user-name
+    value: user
+  - name: git-user-email
+    value: email
+  - name: yaml-git-revision
+    value: main
+  - name: git-script
+    value: |
+      git checkout main
+      sed -i -E "s+(- image: ).*+\1$(tasks.build-push.results.IMAGE_URL)+" deployment.yaml
+      cat deployment.yaml
+      git add deployment.yaml
+      git commit -m "$(date)"
+      git push
+  workspaces:
+  - name: git-ssh-key
+    secret:
+      secretName: ssh-creds
+  - name: src-git-clone
+    persistentVolumeClaim:
+      claimName: src-pvc
+  - name: yaml-git-clone
+    persistentVolumeClaim:
+      claimName: yaml-pvc
+  - name: docker-credentials
+    secret:
+      secretName: docker-credentials
