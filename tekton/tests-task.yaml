@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: tests
+  namespace: tekton-pipelines
+spec:
+  steps:
+  - name: run-tests
+    image: alpine:3.16
+    script: | 
+      #!/usr/bin/env sh
+      echo RUNNING TESTS...
